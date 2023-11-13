@@ -1,0 +1,55 @@
+#main {
+  background-image: url("./4x/spaceBg.png");
+  background-size: cover;
+  width: 919px;
+  height: 403px;
+  display: block;
+}
+
+#startButton {
+  border: none;
+  background: none;
+  position: absolute;
+  background-image: url("./4x/redButton.png");
+  background-size: cover;
+  width: 110px;
+  top: 250px;
+  left: 750px;
+  height: 110px;
+  text-align: center;
+  color: white;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+#ques {
+  border: none;
+  background: none;
+  position: absolute;
+
+  background-size: cover;
+  width: 107px;
+  top: 185px;
+  left: 720px;
+  height: 167px;
+  text-align: center;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  display: none;
+}
+
+#heading {
+  position: absolute;
+  height: 40px;
+  width: 850px;
+  background-image: url("./4x/design1.png");
+  background-size: cover;
+  top: 20px;
+  left: 34.5px;
+  text-align: center;
+  color: white;
+  font-size: 33px;
+  cursor: default;
+  user-select: none;
+}
