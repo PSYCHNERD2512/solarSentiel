@@ -29,12 +29,12 @@
 
   background-size: cover;
   width: 107px;
-  top: 185px;
+  top: 200px;
   left: 720px;
   height: 167px;
   text-align: center;
   color: white;
-  font-size: 12px;
+  font-size: 13px;
   cursor: pointer;
   display: none;
 }
