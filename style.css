@@ -28,13 +28,13 @@
   position: absolute;
 
   background-size: cover;
-  width: 107px;
-  top: 200px;
-  left: 720px;
-  height: 167px;
+  width: 100px;
+  top: 190px;
+  left: 780px;
+  height: 170px;
   text-align: center;
   color: white;
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
   display: none;
 }

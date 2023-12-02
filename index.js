@@ -10,13 +10,12 @@ shuttle.src = "./4x/shuttle.png";
 const sun = new Image();
 sun.src = "./4x/sun.png";
 console.log(sun.height);
-sun.height = sun.height / 4;
-sun.width = sun.width / 4;
+
 console.log(sun.width);
 const beamImg = new Image();
 beamImg.src = "./4x/beam.png";
-beamImg.height = 0.15 * beamImg.height;
-beamImg.width = 0.15 * beamImg.width;
+const ques = document.getElementById("ques");
+
 const quesBox = new Image();
 quesBox.src = "./4x/questionBox.png";
 
@@ -182,7 +181,7 @@ function draw() {
     sun.width,
     sun.height
   );
-  ctx.drawImage(quesBox, center.x + 300, center.y - 50, 130, 130);
+  ctx.drawImage(quesBox, center.x + 300, center.y - 50, 150, 150);
   drawAsteroids();
   drawBeams();
   drawShuttle();
@@ -197,6 +196,11 @@ function gameLoop() {
 }
 
 function startGame() {
+  ques.style.display = "block";
+  sun.height = sun.height / 4;
+  sun.width = sun.width / 4;
+  beamImg.height = 0.15 * beamImg.height;
+  beamImg.width = 0.15 * beamImg.width;
   startbtn.style.display = "none";
   canvas.addEventListener("click", shootBeam);
 
