@@ -19,6 +19,7 @@ const ques = document.getElementById("ques");
 const quesBox = new Image();
 quesBox.src = "./4x/questionBox.png";
 
+options = ["optionA", "optionB", "optionC", "optionD", "optionE"];
 const asteroidImage = new Image();
 asteroidImage.src = "./4x/aes1.png";
 
@@ -39,19 +40,30 @@ const beams = [];
 
 let mouseX = center.x;
 let mouseY = center.y;
-
+let i = 0;
+function getRandomMinusOneOrOne() {
+  return Math.random() < 0.5 ? -1 : 1;
+}
 function generateAsteroid() {
-  const asteroidY = Math.random() * (canvas.height / 2) + canvas.height / 4;
+  if (i >= options.length) return;
+
+  const asteroidY =
+    getRandomMinusOneOrOne() * Math.random() * (sun.height / 2) +
+    canvas.height / 2;
+  let dir = getRandomMinusOneOrOne();
   const asteroidSpeed =
     Math.random() * (maxAsteroidSpeed - minAsteroidSpeed) + minAsteroidSpeed;
   const newAsteroid = {
-    x: -20,
+    x: (canvas.width / 2) * (1 + dir) + dir * asteroidWidth,
     y: asteroidY,
-    speed: -asteroidSpeed,
+    speed: asteroidSpeed,
     width: asteroidWidth,
     height: asteroidHeight,
+    option: options[i],
+    dir: dir,
   };
   asteroids.push(newAsteroid);
+  i++;
 }
 
 function shootBeam(event) {
@@ -77,9 +89,8 @@ function shootBeam(event) {
 function updateAsteroids() {
   for (let i = asteroids.length - 1; i >= 0; i--) {
     const asteroid = asteroids[i];
-    asteroid.x -= asteroid.speed;
-
-    // Implement collision logic with the shuttle if needed
+    if (asteroid.dir == 1) asteroid.x -= asteroid.speed;
+    else asteroid.x += asteroid.speed;
 
     if (asteroid.x + asteroid.width < 0) {
       asteroids.splice(i, 1);
@@ -128,6 +139,9 @@ function drawAsteroids() {
       asteroid.width,
       asteroid.height
     );
+    ctx.fillStyle = "white";
+    ctx.font = "14px Arial";
+    ctx.fillText(asteroid.option, asteroid.x, asteroid.y);
   }
 }
 
