@@ -124,12 +124,9 @@ function checkCollisions() {
         beam.y + beam.height > asteroid.y
       ) {
         if (correctOptions.includes(asteroid.option)) {
-          // Player hit the correct asteroid, continue the game
           asteroids.splice(i, 1);
           beams.splice(j, 1);
-          // Add any additional logic or scoring here
         } else {
-          // Player hit the incorrect asteroid, trigger game over
           gameOver();
         }
       }
@@ -235,7 +232,5 @@ function startGame() {
 
 startbtn.addEventListener("click", startGame);
 function gameOver() {
-  // Add any game over logic here, such as displaying a message or resetting the game
   alert("Game Over! You hit the incorrect asteroid.");
-  // You can reset the game or perform any other actions as needed
 }
