@@ -6,7 +6,7 @@ const adjustedBeamWidth = 3;
 const adjustedBeamHeight = 15;
 const shuttle = new Image();
 shuttle.src = "./4x/shuttle.png";
-
+correctOptions = ["optionA", "optionC"];
 const sun = new Image();
 sun.src = "./4x/sun.png";
 console.log(sun.height);
@@ -123,8 +123,15 @@ function checkCollisions() {
         beam.y < asteroid.y + asteroid.height &&
         beam.y + beam.height > asteroid.y
       ) {
-        asteroids.splice(i, 1);
-        beams.splice(j, 1);
+        if (correctOptions.includes(asteroid.option)) {
+          // Player hit the correct asteroid, continue the game
+          asteroids.splice(i, 1);
+          beams.splice(j, 1);
+          // Add any additional logic or scoring here
+        } else {
+          // Player hit the incorrect asteroid, trigger game over
+          gameOver();
+        }
       }
     }
   }
@@ -227,3 +234,8 @@ function startGame() {
 }
 
 startbtn.addEventListener("click", startGame);
+function gameOver() {
+  // Add any game over logic here, such as displaying a message or resetting the game
+  alert("Game Over! You hit the incorrect asteroid.");
+  // You can reset the game or perform any other actions as needed
+}
