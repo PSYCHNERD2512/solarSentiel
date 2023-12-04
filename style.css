@@ -5,7 +5,70 @@
   height: 403px;
   display: block;
 }
+#retry {
+  border: none;
+  background: none;
+  position: absolute;
+  background-image: url("./4x/retry.png");
+  background-size: cover;
+  width: 45px;
+  top: 220px;
+  left: 445px;
+  height: 48px;
+  text-align: center;
+  color: white;
+  font-size: 25px;
+  cursor: pointer;
+  display: none;
+}
+#incorrect {
+  border: none;
+  background: none;
+  position: absolute;
 
+  background-size: cover;
+  width: 90px;
+  top: 120px;
+  left: 420px;
+  height: 95px;
+  text-align: center;
+  color: white;
+  font-size: 25px;
+  cursor: pointer;
+  display: none;
+}
+#partial {
+  border: none;
+  background: none;
+  position: absolute;
+
+  background-size: cover;
+  width: 90px;
+  top: 120px;
+  left: 420px;
+  height: 95px;
+  text-align: center;
+  color: white;
+  font-size: 25px;
+  cursor: pointer;
+  display: none;
+}
+#correct {
+  border: none;
+  background: none;
+  position: absolute;
+
+  background-size: cover;
+  width: 90px;
+  top: 120px;
+  left: 420px;
+  height: 95px;
+  text-align: center;
+  color: white;
+  font-size: 25px;
+  cursor: pointer;
+  display: none;
+}
 #startButton {
   border: none;
   background: none;

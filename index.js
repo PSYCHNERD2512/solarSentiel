@@ -2,6 +2,7 @@ const canvas = document.getElementById("main");
 const ctx = canvas.getContext("2d");
 ctx.imageSmoothingEnabled = false;
 const beamOffset = 20;
+var prevasteroid = -1;
 const adjustedBeamWidth = 3;
 const adjustedBeamHeight = 15;
 const shuttle = new Image();
@@ -10,7 +11,10 @@ correctOptions = ["optionA", "optionC"];
 const sun = new Image();
 sun.src = "./4x/sun.png";
 console.log(sun.height);
-
+const blueBox = new Image();
+blueBox.src = "./4x/blueBox.png";
+let gameOverFlag = false;
+let partialCorrectFlag = false;
 console.log(sun.width);
 const beamImg = new Image();
 beamImg.src = "./4x/beam.png";
@@ -24,7 +28,7 @@ const asteroidImage = new Image();
 asteroidImage.src = "./4x/aes1.png";
 
 const startbtn = document.getElementById("startButton");
-
+const retrybtn = document.getElementById("retry");
 const center = { x: canvas.width / 2, y: canvas.height / 2 };
 console.log(center.x + center.y);
 const asteroidWidth = 50;
@@ -37,13 +41,19 @@ const beamHeight = 20;
 
 const asteroids = [];
 const beams = [];
-
+const correct = document.getElementById("correct");
+const incorrect = document.getElementById("incorrect");
+const partial = document.getElementById("partial");
 let mouseX = center.x;
 let mouseY = center.y;
 let i = 0;
 function getRandomMinusOneOrOne() {
   return Math.random() < 0.5 ? -1 : 1;
 }
+function drawBlueBox() {
+  ctx.drawImage(blueBox, center.x - 100, center.y - 100, 200, 200);
+}
+
 function generateAsteroid() {
   if (i >= options.length) return;
 
@@ -109,8 +119,25 @@ function updateBeams() {
     }
   }
 }
-
+let correctCollisions = 0;
 function checkCollisions() {
+  console.log(asteroids.length);
+
+  for (let j = asteroids.length - 1; j >= 0; j--) {
+    if (
+      asteroids[j].x < -asteroids[j].width - 10 ||
+      asteroids[j].x > canvas.width + asteroids[j].width + 10
+    ) {
+      asteroids.splice(j, 1); // Remove the asteroid from the array
+    }
+  }
+  if (asteroids.length == 0 && prevasteroid == 1 && correctCollisions != 0) {
+    showPartialCorrectWindow();
+  }
+  if (asteroids.length == 0 && prevasteroid == 1 && correctCollisions == 0) {
+    gameOver();
+  }
+
   for (let i = asteroids.length - 1; i >= 0; i--) {
     const asteroid = asteroids[i];
 
@@ -124,14 +151,32 @@ function checkCollisions() {
         beam.y + beam.height > asteroid.y
       ) {
         if (correctOptions.includes(asteroid.option)) {
+          correctCollisions++;
+
           asteroids.splice(i, 1);
           beams.splice(j, 1);
+          correctOptions = correctOptions.filter(
+            (opt) => opt !== asteroid.option
+          );
+
+          if (correctOptions.length === 0) {
+            gameWon();
+            return;
+          }
         } else {
           gameOver();
         }
       }
     }
+    prevasteroid = asteroids.length;
   }
+}
+
+function showPartialCorrectWindow() {
+  gameOverFlag = true;
+  partial.style.display = "block";
+  retrybtn.style.display = "block";
+  console.log("partial");
 }
 
 function drawAsteroids() {
@@ -206,10 +251,16 @@ function draw() {
 }
 
 function gameLoop() {
+  if (gameOverFlag) {
+    drawBlueBox();
+    return;
+  }
+
   updateAsteroids();
   updateBeams();
   checkCollisions();
   draw();
+
   requestAnimationFrame(gameLoop);
 }
 
@@ -232,5 +283,17 @@ function startGame() {
 
 startbtn.addEventListener("click", startGame);
 function gameOver() {
-  alert("Game Over! You hit the incorrect asteroid.");
+  gameOverFlag = true;
+  retrybtn.style.display = "block";
+  incorrect.style.display = "block";
+}
+
+function gameWon() {
+  gameOverFlag = true;
+  retrybtn.style.display = "block";
+  correct.style.display = "block";
+}
+
+function retryGame() {
+  location.reload();
 }
