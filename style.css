@@ -1,9 +1,14 @@
+@font-face {
+  font-family: myFirstFont;
+  src: url(./Graphik-Font-Family/GraphikMedium.otf);
+}
 #main {
   background-image: url("./4x/spaceBg.png");
   background-size: cover;
   width: 919px;
   height: 403px;
   display: block;
+  font-family: myFirstFont;
 }
 #retry {
   border: none;
@@ -115,4 +120,13 @@
   font-size: 33px;
   cursor: default;
   user-select: none;
+}
+#retry,
+#incorrect,
+#partial,
+#correct,
+#startButton,
+#ques,
+#heading {
+  font-family: myFirstFont;
 }

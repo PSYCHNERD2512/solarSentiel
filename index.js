@@ -26,7 +26,20 @@ quesBox.src = "./4x/questionBox.png";
 options = ["optionA", "optionB", "optionC", "optionD", "optionE"];
 const asteroidImage = new Image();
 asteroidImage.src = "./4x/aes1.png";
+boomImages = [];
+for (let i = 1; i <= 10; i++) {
+  explosionImage = new Image();
 
+  explosionImage.src = "./4x/boom" + i + ".png";
+  explosionImage.onload = function () {
+    console.log("./4x/boom" + i + ".png");
+  };
+
+  boomImages.push(explosionImage);
+  boomImages[i - 1].onload = function () {
+    console.log(boomImages[i - 1]);
+  };
+}
 const startbtn = document.getElementById("startButton");
 const retrybtn = document.getElementById("retry");
 const center = { x: canvas.width / 2, y: canvas.height / 2 };
@@ -64,6 +77,7 @@ function generateAsteroid() {
   const asteroidSpeed =
     Math.random() * (maxAsteroidSpeed - minAsteroidSpeed) + minAsteroidSpeed;
   const newAsteroid = {
+    Image: asteroidImage,
     x: (canvas.width / 2) * (1 + dir) + dir * asteroidWidth,
     y: asteroidY,
     speed: asteroidSpeed,
@@ -153,11 +167,11 @@ function checkCollisions() {
         if (correctOptions.includes(asteroid.option)) {
           correctCollisions++;
 
-          asteroids.splice(i, 1);
+          explodeAsteroid(asteroid, j);
+
+          // asteroids.splice(i, 1);
+
           beams.splice(j, 1);
-          correctOptions = correctOptions.filter(
-            (opt) => opt !== asteroid.option
-          );
 
           if (correctOptions.length === 0) {
             gameWon();
@@ -182,7 +196,7 @@ function showPartialCorrectWindow() {
 function drawAsteroids() {
   for (const asteroid of asteroids) {
     ctx.drawImage(
-      asteroidImage,
+      asteroid.Image,
       asteroid.x,
       asteroid.y,
       asteroid.width,
@@ -258,6 +272,7 @@ function gameLoop() {
 
   updateAsteroids();
   updateBeams();
+
   checkCollisions();
   draw();
 
@@ -296,4 +311,21 @@ function gameWon() {
 
 function retryGame() {
   location.reload();
+}
+function explodeAsteroid(asteroid, i) {
+  let explosionIndex = 0;
+
+  function explode() {
+    asteroid.Image = boomImages[explosionIndex];
+
+    if (explosionIndex < boomImages.length - 1) {
+      explosionIndex++;
+      setTimeout(explode, 100);
+    } else {
+      asteroids.splice(i, 1);
+      correctOptions = correctOptions.filter((opt) => opt !== asteroid.option);
+    }
+  }
+
+  explode();
 }
