@@ -94,7 +94,7 @@
   border: none;
   background: none;
   position: absolute;
-
+  user-select: none;
   background-size: cover;
   width: 100px;
   top: 190px;

@@ -180,7 +180,7 @@ function checkCollisions() {
         if (correctOptions.includes(asteroid.option)) {
           correctCollisions++;
 
-          explodeAsteroid(asteroid, j);
+          explodeAsteroid(asteroid, i);
 
           // asteroids.splice(i, 1);
 
@@ -191,6 +191,7 @@ function checkCollisions() {
             return;
           }
         } else {
+          asteroids.splice(i, 1);
           gameOver();
         }
       }
