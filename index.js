@@ -145,10 +145,23 @@ function checkCollisions() {
       asteroids.splice(j, 1); // Remove the asteroid from the array
     }
   }
-  if (asteroids.length == 0 && prevasteroid == 1 && correctCollisions != 0) {
+  if (
+    asteroids.length == 0 &&
+    prevasteroid == 1 &&
+    correctCollisions != 0 &&
+    correctOptions.length != 2
+  ) {
     showPartialCorrectWindow();
   }
-  if (asteroids.length == 0 && prevasteroid == 1 && correctCollisions == 0) {
+  if (correctOptions.length == 0) {
+    gameWon();
+  }
+  if (
+    asteroids.length == 0 &&
+    prevasteroid == 1 &&
+    correctCollisions == 0 &&
+    correctOptions.length == 2
+  ) {
     gameOver();
   }
 
@@ -173,7 +186,7 @@ function checkCollisions() {
 
           beams.splice(j, 1);
 
-          if (correctOptions.length === 0) {
+          if (correctOptions.length == 0) {
             gameWon();
             return;
           }
@@ -320,10 +333,12 @@ function explodeAsteroid(asteroid, i) {
 
     if (explosionIndex < boomImages.length - 1) {
       explosionIndex++;
-      setTimeout(explode, 100);
+      setTimeout(explode, 50);
     } else {
       asteroids.splice(i, 1);
+
       correctOptions = correctOptions.filter((opt) => opt !== asteroid.option);
+      console.log("this" + correctOptions.length);
     }
   }
 
