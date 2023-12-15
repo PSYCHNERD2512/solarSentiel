@@ -7,7 +7,12 @@ const adjustedBeamWidth = 3;
 const adjustedBeamHeight = 15;
 const shuttle = new Image();
 shuttle.src = "./4x/shuttle.png";
-correctOptions = ["optionA", "optionC"];
+correctOptions = [
+  "Kickbacks\n& Fraudulent\nActivities",
+  "Mismanagement &\nLack of Controls",
+  "Incorrect\nMatching",
+  "Incorrect\nInvestigation &\nCommentary",
+];
 const sun = new Image();
 sun.src = "./4x/sun.png";
 console.log(sun.height);
@@ -19,11 +24,19 @@ console.log(sun.width);
 const beamImg = new Image();
 beamImg.src = "./4x/beam.png";
 const ques = document.getElementById("ques");
-
+var corr_audio = new Audio("./audio/correct.mp3");
+var wrong_audio = new Audio("./audio/wrong.mp3");
 const quesBox = new Image();
 quesBox.src = "./4x/questionBox.png";
 
-options = ["optionA", "optionB", "optionC", "optionD", "optionE"];
+options = [
+  "Kickbacks\n& Fraudulent\nActivities",
+  "Unrelated Administrative\nProcedures",
+  "Mismanagement &\nLack of Controls",
+  "Data Entry\nAccuracy",
+  "Incorrect\nMatching",
+  "Incorrect\nInvestigation &\nCommentary",
+];
 const asteroidImage = new Image();
 asteroidImage.src = "./4x/aes1.png";
 boomImages = [];
@@ -142,26 +155,20 @@ function checkCollisions() {
       asteroids[j].x < -asteroids[j].width - 10 ||
       asteroids[j].x > canvas.width + asteroids[j].width + 10
     ) {
-      asteroids.splice(j, 1); // Remove the asteroid from the array
+      asteroids.splice(j, 1);
     }
   }
   if (
     asteroids.length == 0 &&
-    prevasteroid == 1 &&
     correctCollisions != 0 &&
-    correctOptions.length != 2
+    correctOptions.length != correctCollisions
   ) {
     showPartialCorrectWindow();
   }
-  if (correctOptions.length == 0) {
+  if (correctOptions.length == correctCollisions) {
     gameWon();
   }
-  if (
-    asteroids.length == 0 &&
-    prevasteroid == 1 &&
-    correctCollisions == 0 &&
-    correctOptions.length == 2
-  ) {
+  if (asteroids.length == 0 && correctCollisions == 0 && prevasteroid == 1) {
     gameOver();
   }
 
@@ -178,20 +185,22 @@ function checkCollisions() {
         beam.y + beam.height > asteroid.y
       ) {
         if (correctOptions.includes(asteroid.option)) {
+          corr_audio.volume = 0.1;
+          corr_audio.play();
           correctCollisions++;
 
           explodeAsteroid(asteroid, i);
 
-          // asteroids.splice(i, 1);
-
           beams.splice(j, 1);
 
-          if (correctOptions.length == 0) {
+          if (correctCollisions == 4) {
             gameWon();
             return;
           }
         } else {
           asteroids.splice(i, 1);
+          wrong_audio.volume = 0.05;
+          wrong_audio.play();
           gameOver();
         }
       }
@@ -216,9 +225,13 @@ function drawAsteroids() {
       asteroid.width,
       asteroid.height
     );
+    const lines = asteroid.option.split("\n");
     ctx.fillStyle = "white";
     ctx.font = "14px Arial";
-    ctx.fillText(asteroid.option, asteroid.x, asteroid.y);
+
+    for (let i = 0; i < lines.length; i++) {
+      ctx.fillText(lines[i], asteroid.x, asteroid.y + i * 15 - 30); // Adjust the spacing (15) as needed
+    }
   }
 }
 
@@ -306,7 +319,7 @@ function startGame() {
     mouseX = event.clientX - canvas.getBoundingClientRect().left;
     mouseY = event.clientY - canvas.getBoundingClientRect().top;
   });
-  setInterval(generateAsteroid, 3000);
+  setInterval(generateAsteroid, 2000);
   gameLoop();
 }
 
@@ -337,9 +350,6 @@ function explodeAsteroid(asteroid, i) {
       setTimeout(explode, 50);
     } else {
       asteroids.splice(i, 1);
-
-      correctOptions = correctOptions.filter((opt) => opt !== asteroid.option);
-      console.log("this" + correctOptions.length);
     }
   }
 
