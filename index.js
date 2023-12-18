@@ -148,8 +148,6 @@ function updateBeams() {
 }
 let correctCollisions = 0;
 function checkCollisions() {
-  console.log(asteroids.length);
-
   for (let j = asteroids.length - 1; j >= 0; j--) {
     if (
       asteroids[j].x < -asteroids[j].width - 10 ||

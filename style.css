@@ -76,6 +76,7 @@
 }
 #startButton {
   border: none;
+  filter: hue-rotate(270deg);
   background: none;
   position: absolute;
   background-image: url("./4x/redButton.png");
@@ -109,15 +110,16 @@
 
 #heading {
   position: absolute;
-  height: 40px;
-  width: 850px;
+  height: 35px;
+  width: 855px;
   background-image: url("./4x/design1.png");
   background-size: cover;
-  top: 20px;
+  top: 25px;
+  padding-top: 5px;
   left: 34.5px;
   text-align: center;
   color: white;
-  font-size: 33px;
+  font-size: 28px;
   cursor: default;
   user-select: none;
 }
