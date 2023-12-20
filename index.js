@@ -19,11 +19,11 @@ console.log(sun.height);
 const blueBox = new Image();
 blueBox.src = "./4x/blueBox.png";
 let gameOverFlag = false;
-let partialCorrectFlag = false;
 console.log(sun.width);
 const beamImg = new Image();
 beamImg.src = "./4x/beam.png";
 const ques = document.getElementById("ques");
+const score = document.getElementById("score");
 var corr_audio = new Audio("./audio/correct.mp3");
 var wrong_audio = new Audio("./audio/wrong.mp3");
 const quesBox = new Image();
@@ -147,6 +147,7 @@ function updateBeams() {
   }
 }
 let correctCollisions = 0;
+let wrongCollision = 0;
 function checkCollisions() {
   for (let j = asteroids.length - 1; j >= 0; j--) {
     if (
@@ -159,14 +160,19 @@ function checkCollisions() {
   if (
     asteroids.length == 0 &&
     correctCollisions != 0 &&
+    wrongCollision == 0 &&
     correctOptions.length != correctCollisions
   ) {
     showPartialCorrectWindow();
   }
-  if (correctOptions.length == correctCollisions) {
+  if (correctOptions.length == correctCollisions && wrongCollision == 0) {
     gameWon();
   }
-  if (asteroids.length == 0 && correctCollisions == 0 && prevasteroid == 1) {
+  console.log(asteroids.length);
+  console.log(correctCollisions);
+  console.log(wrongCollision);
+  console.log(prevasteroid);
+  if (asteroids.length == 0 && wrongCollision != 0 && prevasteroid == 1) {
     gameOver();
   }
 
@@ -190,19 +196,15 @@ function checkCollisions() {
           explodeAsteroid(asteroid, i);
 
           beams.splice(j, 1);
-
-          if (correctCollisions == 4) {
-            gameWon();
-            return;
-          }
         } else {
           asteroids.splice(i, 1);
           wrong_audio.volume = 0.05;
           wrong_audio.play();
-          gameOver();
+          wrongCollision++;
         }
       }
     }
+
     prevasteroid = asteroids.length;
   }
 }
@@ -213,8 +215,9 @@ function showPartialCorrectWindow() {
   retrybtn.style.display = "block";
   console.log("partial");
 }
-
+let startflag = 0;
 function drawAsteroids() {
+  startflag = 1;
   for (const asteroid of asteroids) {
     ctx.drawImage(
       asteroid.Image,
@@ -290,6 +293,7 @@ function draw() {
 }
 
 function gameLoop() {
+  score.innerHTML = "Score:\n" + (5 * correctCollisions + -1 * wrongCollision);
   if (gameOverFlag) {
     drawBlueBox();
     return;
@@ -305,6 +309,8 @@ function gameLoop() {
 }
 
 function startGame() {
+  score.style.display = "block";
+
   ques.style.display = "block";
   sun.height = sun.height / 4;
   sun.width = sun.width / 4;

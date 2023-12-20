@@ -74,6 +74,20 @@
   cursor: pointer;
   display: none;
 }
+#score {
+  position: absolute;
+  top: 70px;
+  left: 790px;
+  width: 80px;
+  height: 80px;
+  display: none;
+  border-radius: 50%;
+  background: radial-gradient(circle, #8b00ff, #4b0082);
+  color: white;
+  text-align: center;
+  line-height: 80px; 
+  font-size: 16px; 
+}
 #startButton {
   border: none;
   filter: hue-rotate(270deg);
