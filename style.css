@@ -76,8 +76,8 @@
 }
 #score {
   position: absolute;
-  top: 70px;
-  left: 790px;
+  top: 80px;
+  left: 40px;
   width: 80px;
   height: 80px;
   display: none;
@@ -85,8 +85,8 @@
   background: radial-gradient(circle, #8b00ff, #4b0082);
   color: white;
   text-align: center;
-  line-height: 80px; 
-  font-size: 16px; 
+  line-height: 80px;
+  font-size: 16px;
 }
 #startButton {
   border: none;
@@ -121,7 +121,20 @@
   cursor: pointer;
   display: none;
 }
-
+#next {
+  position: absolute;
+  height: 35px;
+  width: 855px;
+  display: none;
+  top: 280px;
+  padding-top: 5px;
+  left: 34.5px;
+  text-align: center;
+  color: white;
+  font-size: 14px;
+  cursor: default;
+  user-select: none;
+}
 #heading {
   position: absolute;
   height: 35px;

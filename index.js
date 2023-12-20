@@ -1,4 +1,5 @@
 const canvas = document.getElementById("main");
+const next = document.getElementById("next");
 const ctx = canvas.getContext("2d");
 ctx.imageSmoothingEnabled = false;
 const beamOffset = 20;
@@ -335,6 +336,7 @@ function gameOver() {
 }
 
 function gameWon() {
+  next.style.display = "block";
   gameOverFlag = true;
   retrybtn.style.display = "block";
   correct.style.display = "block";
