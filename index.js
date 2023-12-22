@@ -1,52 +1,57 @@
-const canvas = document.getElementById("main");
-const next = document.getElementById("next");
-const ctx = canvas.getContext("2d");
+var parentVar = 'Points';
+var player;
+initScore = 0;
+
+const canvas = document.getElementById('main');
+const next = document.getElementById('next');
+const ctx = canvas.getContext('2d');
 ctx.imageSmoothingEnabled = false;
 const beamOffset = 20;
 var prevasteroid = -1;
 const adjustedBeamWidth = 3;
 const adjustedBeamHeight = 15;
 const shuttle = new Image();
-shuttle.src = "./4x/shuttle.png";
+shuttle.src = './4x/shuttle.png';
 correctOptions = [
-  "Kickbacks\n& Fraudulent\nActivities",
-  "Mismanagement &\nLack of Controls",
-  "Incorrect\nMatching",
-  "Incorrect\nInvestigation &\nCommentary",
+  'Kickbacks\n& Fraudulent\nActivities',
+  'Mismanagement &\nLack of Controls',
+  'Incorrect\nMatching',
+  'Incorrect\nInvestigation &\nCommentary',
 ];
 const sun = new Image();
-sun.src = "./4x/sun.png";
+sun.src = './4x/sun.png';
 console.log(sun.height);
 const blueBox = new Image();
-blueBox.src = "./4x/blueBox.png";
+blueBox.src = './4x/blueBox.png';
 let gameOverFlag = false;
 console.log(sun.width);
 const beamImg = new Image();
-beamImg.src = "./4x/beam.png";
-const ques = document.getElementById("ques");
-const score = document.getElementById("score");
-var corr_audio = new Audio("./audio/correct.mp3");
-var wrong_audio = new Audio("./audio/wrong.mp3");
+beamImg.src = './4x/beam.png';
+const ques = document.getElementById('ques');
+const score = document.getElementById('score');
+var scoreVal = 0;
+var corr_audio = new Audio('./audio/correct.mp3');
+var wrong_audio = new Audio('./audio/wrong.mp3');
 const quesBox = new Image();
-quesBox.src = "./4x/questionBox.png";
+quesBox.src = './4x/questionBox.png';
 
 options = [
-  "Kickbacks\n& Fraudulent\nActivities",
-  "Unrelated Administrative\nProcedures",
-  "Mismanagement &\nLack of Controls",
-  "Data Entry\nAccuracy",
-  "Incorrect\nMatching",
-  "Incorrect\nInvestigation &\nCommentary",
+  'Kickbacks\n& Fraudulent\nActivities',
+  'Unrelated Administrative\nProcedures',
+  'Mismanagement &\nLack of Controls',
+  'Data Entry\nAccuracy',
+  'Incorrect\nMatching',
+  'Incorrect\nInvestigation &\nCommentary',
 ];
 const asteroidImage = new Image();
-asteroidImage.src = "./4x/aes1.png";
+asteroidImage.src = './4x/aes1.png';
 boomImages = [];
 for (let i = 1; i <= 10; i++) {
   explosionImage = new Image();
 
-  explosionImage.src = "./4x/boom" + i + ".png";
+  explosionImage.src = './4x/boom' + i + '.png';
   explosionImage.onload = function () {
-    console.log("./4x/boom" + i + ".png");
+    console.log('./4x/boom' + i + '.png');
   };
 
   boomImages.push(explosionImage);
@@ -54,8 +59,8 @@ for (let i = 1; i <= 10; i++) {
     console.log(boomImages[i - 1]);
   };
 }
-const startbtn = document.getElementById("startButton");
-const retrybtn = document.getElementById("retry");
+const startbtn = document.getElementById('startButton');
+const retrybtn = document.getElementById('retry');
 const center = { x: canvas.width / 2, y: canvas.height / 2 };
 console.log(center.x + center.y);
 const asteroidWidth = 50;
@@ -68,9 +73,9 @@ const beamHeight = 20;
 
 const asteroids = [];
 const beams = [];
-const correct = document.getElementById("correct");
-const incorrect = document.getElementById("incorrect");
-const partial = document.getElementById("partial");
+const correct = document.getElementById('correct');
+const incorrect = document.getElementById('incorrect');
+const partial = document.getElementById('partial');
 let mouseX = center.x;
 let mouseY = center.y;
 let i = 0;
@@ -212,9 +217,9 @@ function checkCollisions() {
 
 function showPartialCorrectWindow() {
   gameOverFlag = true;
-  partial.style.display = "block";
-  retrybtn.style.display = "block";
-  console.log("partial");
+  partial.style.display = 'block';
+  retrybtn.style.display = 'block';
+  console.log('partial');
 }
 let startflag = 0;
 function drawAsteroids() {
@@ -227,9 +232,9 @@ function drawAsteroids() {
       asteroid.width,
       asteroid.height
     );
-    const lines = asteroid.option.split("\n");
-    ctx.fillStyle = "white";
-    ctx.font = "14px Arial";
+    const lines = asteroid.option.split('\n');
+    ctx.fillStyle = 'white';
+    ctx.font = '14px Arial';
 
     for (let i = 0; i < lines.length; i++) {
       ctx.fillText(lines[i], asteroid.x, asteroid.y + i * 15 - 30); // Adjust the spacing (15) as needed
@@ -294,7 +299,8 @@ function draw() {
 }
 
 function gameLoop() {
-  score.innerHTML = "Score:\n" + (5 * correctCollisions + -1 * wrongCollision);
+  scoreVal = 5 * correctCollisions + -1 * wrongCollision;
+  score.innerHTML = 'Score:\n' + scoreVal;
   if (gameOverFlag) {
     drawBlueBox();
     return;
@@ -310,17 +316,26 @@ function gameLoop() {
 }
 
 function startGame() {
-  score.style.display = "block";
+  if (window.parent && window.parent.GetPlayer) {
+    player = window.parent.GetPlayer();
+    if (player) {
+      console.log('Get Var ', player.GetVar);
+      console.log('Get Var score', player.GetVar(parentVar));
+      initScore = player.GetVar(parentVar);
+    }
+  }
 
-  ques.style.display = "block";
+  score.style.display = 'block';
+
+  ques.style.display = 'block';
   sun.height = sun.height / 4;
   sun.width = sun.width / 4;
   beamImg.height = 0.15 * beamImg.height;
   beamImg.width = 0.15 * beamImg.width;
-  startbtn.style.display = "none";
-  canvas.addEventListener("click", shootBeam);
+  startbtn.style.display = 'none';
+  canvas.addEventListener('click', shootBeam);
 
-  canvas.addEventListener("mousemove", function (event) {
+  canvas.addEventListener('mousemove', function (event) {
     mouseX = event.clientX - canvas.getBoundingClientRect().left;
     mouseY = event.clientY - canvas.getBoundingClientRect().top;
   });
@@ -328,18 +343,23 @@ function startGame() {
   gameLoop();
 }
 
-startbtn.addEventListener("click", startGame);
+startbtn.addEventListener('click', startGame);
 function gameOver() {
+  if (player) {
+    //score = player.getVar(parentVar);
+    player.SetVar(parentVar, initScore + scoreVal);
+  }
+
   gameOverFlag = true;
-  retrybtn.style.display = "block";
-  incorrect.style.display = "block";
+  retrybtn.style.display = 'block';
+  incorrect.style.display = 'block';
 }
 
 function gameWon() {
-  next.style.display = "block";
+  next.style.display = 'block';
   gameOverFlag = true;
-  retrybtn.style.display = "block";
-  correct.style.display = "block";
+  retrybtn.style.display = 'block';
+  correct.style.display = 'block';
 }
 
 function retryGame() {
