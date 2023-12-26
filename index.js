@@ -385,10 +385,6 @@ function gameWon() {
   gameOverFlag = true;
   retrybtn.style.display = "block";
   correct.style.display = "block";
-  if (gameNumber !== 0) {
-    // Display correct options at the end
-    displayCorrectOptions();
-  }
 }
 
 function retryGame() {

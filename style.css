@@ -151,19 +151,25 @@
   user-select: none;
 }
 #corrOpt {
+  background-color: #4b0082;
+  border: 0.5px solid white;
   position: absolute;
-  height: 35px;
-  width: 855px;
-  background-size: cover;
-  top: 120px;
+  height: auto;
+  max-width: 500px;
+  top: 300px;
   padding-top: 5px;
-  left: 600px;
+  padding-left: 5px;
+  left: 200px;
   color: white;
   font-size: 14px;
   cursor: default;
   user-select: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   display: none;
 }
+
 #retry,
 #incorrect,
 #partial,
@@ -172,4 +178,18 @@
 #ques,
 #heading {
   font-family: myFirstFont;
+}
+#corrOpt ul {
+  list-style-type: square;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#corrOpt ul li {
+  flex: 1 1 calc(50%+30px);
+  margin: 5px;
+  margin-left: 20px;
+  box-sizing: border-box;
 }
