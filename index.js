@@ -334,6 +334,8 @@ function gameLoop() {
 }
 
 function startGame() {
+  shuffleArray(correctOptions);
+  shuffleArray(options);
   if (window.parent && window.parent.GetPlayer) {
     player = window.parent.GetPlayer();
     if (player) {
@@ -391,6 +393,7 @@ function gameWon() {
 
 function retryGame() {
   gameNumber++;
+  corrOpt.style.display = "none";
   // Reset all game-related variables to their initial values
   asteroids.length = 0;
   beams.length = 0;
@@ -426,4 +429,10 @@ function explodeAsteroid(asteroid, i) {
   }
 
   explode();
+}
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
 }
