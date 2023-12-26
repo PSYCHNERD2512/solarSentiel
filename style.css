@@ -150,6 +150,20 @@
   cursor: default;
   user-select: none;
 }
+#corrOpt {
+  position: absolute;
+  height: 35px;
+  width: 855px;
+  background-size: cover;
+  top: 120px;
+  padding-top: 5px;
+  left: 600px;
+  color: white;
+  font-size: 14px;
+  cursor: default;
+  user-select: none;
+  display: none;
+}
 #retry,
 #incorrect,
 #partial,

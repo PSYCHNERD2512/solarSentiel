@@ -2,13 +2,14 @@ var parentVar = "Points";
 var player;
 initScore = 0;
 let attempts = 0;
-
+let gameNumber = 0;
 const canvas = document.getElementById("main");
 const next = document.getElementById("next");
 const ctx = canvas.getContext("2d");
 ctx.imageSmoothingEnabled = false;
 const beamOffset = 20;
 var prevasteroid = -1;
+
 const adjustedBeamWidth = 3;
 const adjustedBeamHeight = 15;
 const shuttle = new Image();
@@ -30,6 +31,7 @@ const beamImg = new Image();
 beamImg.src = "./4x/beam.png";
 const ques = document.getElementById("ques");
 const score = document.getElementById("score");
+const corrOpt = document.getElementById("corrOpt");
 var scoreVal = 0;
 var corr_audio = new Audio("./audio/correct.mp3");
 var wrong_audio = new Audio("./audio/wrong.mp3");
@@ -83,6 +85,7 @@ let i = 0;
 function getRandomMinusOneOrOne() {
   return Math.random() < 0.5 ? -1 : 1;
 }
+
 function drawBlueBox() {
   ctx.drawImage(blueBox, center.x - 100, center.y - 100, 200, 200);
 }
@@ -182,6 +185,14 @@ function checkCollisions() {
   if (asteroids.length == 0 && wrongCollision != 0 && prevasteroid == 1) {
     gameOver();
   }
+  if (
+    asteroids.length == 0 &&
+    wrongCollision == 0 &&
+    correctCollisions == 0 &&
+    prevasteroid == 1
+  ) {
+    gameOver();
+  }
 
   for (let i = asteroids.length - 1; i >= 0; i--) {
     const asteroid = asteroids[i];
@@ -204,10 +215,10 @@ function checkCollisions() {
 
           beams.splice(j, 1);
         } else {
-          asteroids.splice(i, 1);
           wrong_audio.volume = 0.05;
           wrong_audio.play();
           wrongCollision++;
+          explodeAsteroid(asteroid, i);
           beams.splice(j, 1);
         }
       }
@@ -218,6 +229,9 @@ function checkCollisions() {
 }
 
 function showPartialCorrectWindow() {
+  if (gameNumber > 1) {
+    corrOpt.style.display = "block";
+  }
   next.style.display = "block";
   gameOverFlag = true;
   partial.style.display = "block";
@@ -302,6 +316,7 @@ function draw() {
 }
 
 function gameLoop() {
+  console.log("game number is" + gameNumber);
   scoreVal = 5 * correctCollisions + -1 * wrongCollision;
   score.innerHTML = "Score:\n" + scoreVal;
   if (gameOverFlag) {
@@ -349,6 +364,9 @@ function startGame() {
 
 startbtn.addEventListener("click", startGame);
 function gameOver() {
+  if (gameNumber > 1) {
+    corrOpt.style.display = "block";
+  }
   next.style.display = "block";
   if (player) {
     //score = player.getVar(parentVar);
@@ -365,10 +383,33 @@ function gameWon() {
   gameOverFlag = true;
   retrybtn.style.display = "block";
   correct.style.display = "block";
+  if (gameNumber !== 0) {
+    // Display correct options at the end
+    displayCorrectOptions();
+  }
 }
 
 function retryGame() {
-  location.reload();
+  gameNumber++;
+  // Reset all game-related variables to their initial values
+  asteroids.length = 0;
+  beams.length = 0;
+  correctCollisions = 0;
+  wrongCollision = 0;
+  prevasteroid = -1;
+  i = 0;
+  gameOverFlag = false;
+
+  // Hide game over elements
+  next.style.display = "none";
+  gameOverFlag = false;
+  partial.style.display = "none";
+  incorrect.style.display = "none";
+  correct.style.display = "none";
+  retrybtn.style.display = "none";
+
+  // Restart the game loop
+  gameLoop();
 }
 function explodeAsteroid(asteroid, i) {
   let explosionIndex = 0;
