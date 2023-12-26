@@ -39,7 +39,7 @@
   text-align: center;
   color: white;
   font-size: 25px;
-  cursor: pointer;
+
   display: none;
 }
 #partial {
@@ -55,7 +55,7 @@
   text-align: center;
   color: white;
   font-size: 25px;
-  cursor: pointer;
+
   display: none;
 }
 #correct {
@@ -71,7 +71,7 @@
   text-align: center;
   color: white;
   font-size: 25px;
-  cursor: pointer;
+
   display: none;
 }
 #score {
